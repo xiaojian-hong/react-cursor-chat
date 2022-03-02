@@ -5,7 +5,15 @@ import CursorChat from '@yomo/react-cursor-chat';
 import '@yomo/react-cursor-chat/dist/cursor-chat.min.css';
 import styles from '../styles/Home.module.css';
 
-const Home: NextPage = () => {
+export const getServerSideProps = ({ query }: any) => {
+    return {
+        props: {
+            endpoint: query.endpoint || '',
+        },
+    }
+}
+
+const Home: NextPage<{ endpoint: string }> = ({ endpoint }) => {
     return (
         <div className={styles.container}>
             <Head>
@@ -32,7 +40,7 @@ const Home: NextPage = () => {
                 </p>
                 <CursorChat
                     showLatency
-                    presenceURL="https://prsc.yomo.dev"
+                    presenceURL={endpoint}
                     presenceAuthEndpoint="/api/auth"
                     avatar={`/cursor-avatar-${new Date().getSeconds() % 9}.png`}
                     theme="light"
